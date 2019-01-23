@@ -73,7 +73,8 @@ class BlinkTask {
     /*!	\brief BlinkTask constructor
     **/
     BlinkTask(const Led &led)
-        : m_led(led), m_active(false), 
+        : m_led(led), m_initial_lit_state(false),
+        m_active(false), m_stop_request(false),
         m_times(0), m_times_remaining(0), m_forever(false),
         m_on_delay(0), m_off_delay(0), 
         m_ms(0), m_next_ms(0) {}
@@ -101,7 +102,10 @@ class BlinkTask {
   private:
     Led m_led;
 
+    bool m_initial_lit_state;
+
     bool m_active;  //!<  active state
+    bool m_stop_request;  //!<  stop request
 
     uint8_t m_times;  //!<  number of times it should blink
     uint8_t m_times_remaining;  //!<  number of times it should blink

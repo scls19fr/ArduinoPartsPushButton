@@ -64,6 +64,7 @@ Implementation of BlinkTask class
 
 void BlinkTask::begin(uint32_t ms) {
   m_ms = ms;
+  m_initial_lit_state = m_led.isLit();
 }
 
 void BlinkTask::schedule(uint32_t ms) {
@@ -89,7 +90,7 @@ void BlinkTask::start(uint32_t on_delay, uint32_t off_delay) {
 }
 
 void BlinkTask::stop() {
-  m_active = false;
+  m_stop_request = false;
 }
 
 void BlinkTask::update(uint32_t ms) {
@@ -105,5 +106,10 @@ void BlinkTask::update(uint32_t ms) {
       }
       schedule(ms);
     }
+  }
+  if (m_stop_request) {
+    m_led.lit(m_initial_lit_state);
+    m_stop_request = false;
+    m_active = false;
   }
 }
