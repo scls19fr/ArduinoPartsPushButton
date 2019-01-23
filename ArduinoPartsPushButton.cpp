@@ -15,8 +15,7 @@ Implementation of abstract class
 GhostPushButton for mocking purpose
 */
 
-bool AbstractPushButton::read() {
-  uint32_t ms = millis();
+bool AbstractPushButton::read(uint32_t ms) {
   bool pinVal = readPinValue();  // call virtual pure function
   if (ms - m_lastChange < m_debounceTime) {
     m_changed = false;
@@ -62,10 +61,10 @@ uint32_t AbstractPushButton::lastChange() {
 Implementation of PushButton
 */
 
-void PushButton::begin() {
+void PushButton::begin(uint32_t ms) {
   pinMode(m_pin, m_pullupEnabled ? INPUT_PULLUP : INPUT);
   m_state = readPinValue();
-  m_time = millis();
+  m_time = ms;
   m_lastState = m_state;
   m_changed = false;
   m_lastChange = m_time;
@@ -89,10 +88,10 @@ void GhostPushButton::release() {
   m_ghost_state = false;
 }
 
-void GhostPushButton::begin() {
+void GhostPushButton::begin(uint32_t ms) {
   release();
   m_state = m_ghost_state;
-  m_time = millis();
+  m_time = ms;
   m_lastState = m_state;
   m_changed = false;
   m_lastChange = m_time;

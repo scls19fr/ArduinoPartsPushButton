@@ -44,12 +44,13 @@ class AbstractPushButton {
         : m_pin(pin), m_debounceTime(debounceTime), m_pullupEnabled(pullupEnabled), m_invert(invert) {}
 
     /*!	\brief Get the current debounced button state.
+    **	\param [in] ms - millis()
     **  \retval true for pressed
     **  \retval false for released
     **  \warning Call this function frequently to ensure
     **           the sketch is responsive to user input.
     **/
-    bool read();
+    bool read(uint32_t ms);
 
     /*!	\brief Get pressed state of the push button (at the last call to read()).
     **  \return pressed state of the push button
@@ -140,9 +141,10 @@ class PushButton: public AbstractPushButton {
         : AbstractPushButton(pin, debounceTime, pullupEnabled, invert) {}
 
     /*!	\brief Initialize a PushButton object
+    **	\param [in] ms - millis()
     **  \warning The pin it's connected to is also initialized 
     **/
-    void begin();
+    void begin(uint32_t ms);
 
   private:
     bool readPinValue();
@@ -165,9 +167,10 @@ class GhostPushButton: public AbstractPushButton {
         : AbstractPushButton(pin, debounceTime, pullupEnabled, invert) {}
 
     /*!	\brief Initialize a GhostPushButton object
+    **	\param [in] ms - millis()
     **  \warning The pin it's connected is not initialized as it's only for mocking purpose
     **/
-    void begin();
+    void begin(uint32_t ms);
 
     /*!	\brief Press (virtually) push button
     **/

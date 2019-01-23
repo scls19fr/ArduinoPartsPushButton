@@ -6,12 +6,14 @@
 unittest(unittest_pushbutton)
 {
   const byte PIN_BUTTON = 7;
+
   GhostPushButton but(PIN_BUTTON);
-  but.begin();
+  uint32_t ms = 0;  // millis();
+  but.begin(ms);
   assertTrue(but.isReleased());
-  delay(100);
+  ms += 100;
   but.press();
-  but.read();
+  but.read(ms);
   //assertTrue(but.isPressed());
   //but.release();
   //but.read();

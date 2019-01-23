@@ -13,7 +13,7 @@
 Implementation of Led class
 */
 
-void Led::begin() {
+void Led::begin(uint32_t ms) {
   pinMode(m_pin, OUTPUT);
   off();
 }
@@ -53,24 +53,57 @@ bool Led::isLit() {
   return m_state;
 }
 
-void Led::update() {
-
+void Led::update(uint32_t ms) {
+  // blink_task.update(ms);
 }
 
-void Led::blink(uint8_t times, uint32_t on_delay, uint32_t off_delay) {
-  on_delay = 0;
-  off_delay = 0;
+
+/*
+Implementation of BlinkTask class
+*/
+
+void BlinkTask::begin(uint32_t ms) {
+  m_ms = ms;
 }
 
-void Led::blinkForever(uint32_t on_delay, uint32_t off_delay) {
-  on_delay = 0;
-  off_delay = 0;
+void BlinkTask::schedule(uint32_t ms) {
+  if (m_led.isLit()) {
+    m_next_ms = ms + m_on_delay;
+  } else {
+    m_next_ms = ms + m_off_delay;
+  }
 }
 
-bool Led::isBlinking() {
-  return false;
+void BlinkTask::start(uint8_t times, uint32_t on_delay, uint32_t off_delay) {
+  if (!m_active) {
+    m_times = times;
+    m_times_remaining = m_times;
+    m_forever = times == 0;
+    schedule(m_ms);
+    m_active = true;
+  }
 }
 
-void Led::stop() {
+void BlinkTask::start(uint32_t on_delay, uint32_t off_delay) {
+  start(0, on_delay, off_delay);
+}
 
+void BlinkTask::stop() {
+  m_active = false;
+}
+
+void BlinkTask::update(uint32_t ms) {
+  m_ms = ms;
+  if (m_active && (m_forever || m_times_remaining > 0)) {
+    if (m_ms >= m_next_ms) {
+      m_led.toggle();
+      if (!m_forever) {
+        m_times_remaining -= 1;
+        if (m_times_remaining==0) {
+          m_active = false;
+        }
+      }
+      schedule(ms);
+    }
+  }
 }

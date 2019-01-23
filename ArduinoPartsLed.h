@@ -31,7 +31,7 @@ class Led {
     /*!	\brief Initialize a PushButton object
     **  \warning The pin it's connected to is also initialized 
     **/
-    void begin();
+    void begin(uint32_t ms);
 
     /*!	\brief Switch on led
     **/
@@ -58,33 +58,61 @@ class Led {
 
     /*!	\brief Set physically Led state according internal state
     **/
-    void update();
-
-    /*!	\brief Blink led a given number of times
-    **	\param [in] times - number of times led should blink
-    **	\param [in] on_delay - on delay (milliseconds)
-    **	\param [in] off_delay - off delay (milliseconds)
-    **/
-    void blink(uint8_t times, uint32_t on_delay, uint32_t off_delay);
-
-    /*!	\brief Blink led forever (until stopped)
-    **	\param [in] on_delay - on delay (milliseconds)
-    **	\param [in] off_delay - off delay (milliseconds)
-    **/
-    void blinkForever(uint32_t on_delay, uint32_t off_delay);
-
-    /*!	\return true is led is blinking
-    **/
-    bool isBlinking();
-
-    /*!	\brief Stop blinking
-    **/
-    void stop();
+    void update(uint32_t ms);
 
   private:
     uint8_t m_pin;     //!<  arduino pin number connected to led
     bool m_lit_state;  //!<  if true, interpret logic low as pressed, else interpret logic high as pressed
     bool m_state;      //!<  current led state, true=led on false=led off
+};
+
+/*!	\brief Blink task
+**/
+class BlinkTask {
+  public:
+    /*!	\brief BlinkTask constructor
+    **/
+    BlinkTask(const Led &led)
+        : m_led(led), m_active(false), 
+        m_times(0), m_times_remaining(0), m_forever(false),
+        m_on_delay(0), m_off_delay(0), 
+        m_ms(0), m_next_ms(0) {}
+
+    /*!	\brief Initialize a BlinkTask object
+    **/
+    void begin(uint32_t ms);
+
+    /*!	\brief Start blinking a given number of times
+    **/
+    void start(uint8_t times, uint32_t on_delay, uint32_t off_delay);
+
+    /*!	\brief Start blinking forever
+    **/
+    void start(uint32_t on_delay, uint32_t off_delay);
+
+    /*!	\brief Stop blinking
+    **/
+    void stop();
+
+    /*!	\brief Update BlinkTask
+    **/
+    void update(uint32_t ms);
+
+  private:
+    Led m_led;
+
+    bool m_active;  //!<  active state
+
+    uint8_t m_times;  //!<  number of times it should blink
+    uint8_t m_times_remaining;  //!<  number of times it should blink
+    bool m_forever;  //!<  blinking state
+
+    uint32_t m_on_delay;
+    uint32_t m_off_delay;
+
+    uint32_t m_ms;
+    uint32_t m_next_ms;
+    void schedule(uint32_t ms);
 };
 
 #endif
