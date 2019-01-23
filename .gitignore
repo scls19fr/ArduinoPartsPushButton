@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Unit tests
+unittest_*
+Gemfile.lock
+
+# Doc
+html
+latex
