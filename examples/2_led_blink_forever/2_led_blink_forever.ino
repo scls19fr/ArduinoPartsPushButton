@@ -7,7 +7,7 @@ const byte PIN_LED = 13;
 Led led(PIN_LED);
 
 // instantiate a BlinkTask object with led
-BlinkTask task(led);
+BlinkTask blinkTask(led);
 
 uint32_t ms = 0;
 
@@ -16,12 +16,12 @@ void setup() {
 
   // initialize the led object
   led.begin(ms);
-  task.start(500, 200);
-  // led.blink_task.start(500, 200);
+  blinkTask.start(500, 200);
+  // led.blinkTask.start(500, 200);
 }
 
 void loop() {
   ms = millis();
-  task.update(ms);
+  blinkTask.update(ms);
   // led.update(ms);
 }

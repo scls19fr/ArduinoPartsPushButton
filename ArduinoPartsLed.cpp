@@ -96,6 +96,11 @@ void BlinkTask::stop() {
 void BlinkTask::update(uint32_t ms) {
   m_ms = ms;
   if (m_active && (m_forever || m_times_remaining > 0)) {
+    if (m_stop_request) {
+      m_led.lit(m_initial_lit_state);
+      m_stop_request = false;
+      m_active = false;
+    }
     if (m_ms >= m_next_ms) {
       m_led.toggle();
       if (!m_forever) {
@@ -106,10 +111,5 @@ void BlinkTask::update(uint32_t ms) {
       }
       schedule(ms);
     }
-  }
-  if (m_stop_request) {
-    m_led.lit(m_initial_lit_state);
-    m_stop_request = false;
-    m_active = false;
   }
 }
