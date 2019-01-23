@@ -13,8 +13,18 @@
 
 #include <Arduino.h>
 
+
+/*!	\brief Default debounce time
+**/
 #define PB_DEBOUNCE_TIME_DEFAULT 25
+
+
+/*!	\brief Default pullup enabled (true)
+**/
 #define PB_PULLUP_ENABLED_DEFAULT true
+
+/*!	\brief Default invert (true) ie interpret a low logic level as pressed
+**/
 #define PB_INVERT_DEFAULT true
 
 /*!	\brief Abstract class for push button

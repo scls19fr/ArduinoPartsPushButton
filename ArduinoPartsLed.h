@@ -12,6 +12,8 @@
 
 #include <Arduino.h>
 
+/*!	\brief Default lit state (true)
+**/
 #define LED_LIT_STATE_DEFAULT true
 
 /*!	\brief Light emitting diode

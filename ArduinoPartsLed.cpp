@@ -9,6 +9,10 @@
 
 #include "ArduinoPartsLed.h"
 
+/*
+Implementation of Led class
+*/
+
 void Led::begin() {
   pinMode(m_pin, OUTPUT);
   off();
