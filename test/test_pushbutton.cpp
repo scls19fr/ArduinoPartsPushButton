@@ -3,7 +3,7 @@
 #include "../ArduinoPartsPushButton.h"
 
 
-unittest(unittest_pushbutton)
+unittest(pushbutton)
 {
   const byte PIN_BUTTON = 7;
 

@@ -4,7 +4,7 @@
 
 #define PIN_LED 13
 
-unittest(unittest_led_on_off_toggle)
+unittest(led_on_off_toggle)
 {
   uint32_t ms = 0;  // millis();
 
@@ -20,12 +20,12 @@ unittest(unittest_led_on_off_toggle)
 
   led.toggle();
   assertTrue(led.isLit());
-  
+
   led.toggle();
   assertFalse(led.isLit());
 }
 
-unittest(unittest_blink_task)
+unittest(blink_task)
 {
   uint32_t ms = 0;  // millis();
 
