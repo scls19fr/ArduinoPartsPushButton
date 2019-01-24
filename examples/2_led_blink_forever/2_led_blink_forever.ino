@@ -1,10 +1,10 @@
 #include <ArduinoPartsLed.h>
 
 // pinout
-const byte PIN_LED = 13;
+const byte PIN_LED_0 = 13;
 
 // instantiate a led object with pin number PIN_LED
-Led led(PIN_LED);
+Led led(PIN_LED_0);
 
 // instantiate a BlinkTask object with led
 BlinkTask blinkTask(led);
