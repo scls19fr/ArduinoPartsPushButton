@@ -3,7 +3,7 @@
 // pinout
 const byte PIN_LED_0 = 13;
 
-// instantiate a led object with pin number PIN_LED
+// instantiate a led object with pin number PIN_LED_0
 Led led(PIN_LED_0);
 
 // instantiate a BlinkTask object with led
