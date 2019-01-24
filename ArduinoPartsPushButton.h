@@ -91,7 +91,7 @@ class AbstractPushButton {
     **          and has been in that state for at least the given number of milliseconds.
     **  \retval false otherwise
     **/
-    bool pressedFor(uint32_t ms);
+    bool isPressedFor(uint32_t ms);
 
     /*! \brief Check to see if the button is released and has been in that state 
     **         for a specified time (trigger several times)
@@ -100,7 +100,7 @@ class AbstractPushButton {
     **          and has been in that state for at least the given number of milliseconds.
     **  \retval false otherwise
     **/
-    bool releasedFor(uint32_t ms);
+    bool isReleasedFor(uint32_t ms);
 
     /*! \brief Check to see if the button is pressed and has been in that state 
     **         for a specified time (trigger once)

@@ -52,17 +52,17 @@ bool AbstractPushButton::wasReleased() {
   return !m_state && m_changed;
 }
 
-bool AbstractPushButton::pressedFor(uint32_t ms) {
+bool AbstractPushButton::isPressedFor(uint32_t ms) {
   return m_state && m_time - m_lastChange >= ms;
 }
 
-bool AbstractPushButton::releasedFor(uint32_t ms) {
+bool AbstractPushButton::isReleasedFor(uint32_t ms) {
   return !m_state && m_time - m_lastChange >= ms;
 }
 
 bool AbstractPushButton::wasPressedFor(uint32_t ms) {
   if (ms > m_longPressedDuration) {
-    if (pressedFor(ms)) {
+    if (isPressedFor(ms)) {
       m_longPressedDuration = ms;
       return true;
     }
@@ -72,7 +72,7 @@ bool AbstractPushButton::wasPressedFor(uint32_t ms) {
 
 bool AbstractPushButton::wasReleasedFor(uint32_t ms) {
   if (ms > m_longReleasedDuration) {
-    if (releasedFor(ms)) {
+    if (isReleasedFor(ms)) {
       m_longReleasedDuration = ms;
       return true;
     }
@@ -126,6 +126,6 @@ void GhostPushButton::begin(uint32_t ms) {
 
 bool GhostPushButton::readPinValue() {
   bool pinVal = m_ghost_state;
-  if (m_invert) pinVal = !pinVal;
+  // if (m_invert) pinVal = !pinVal;
   return pinVal;
 }
