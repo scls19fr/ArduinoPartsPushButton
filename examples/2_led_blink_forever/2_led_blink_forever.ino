@@ -51,7 +51,7 @@ void loop() {
     }
   }
 
-  if (but.wasReleasedFor(200)) {
+  if (but.wasReleasedFor(2000)) {
     if (!blinkTask.isActive()) {
       Serial.println("start blinkTask 3 times");
       blinkTask.start(3, ON_DELAY, OFF_DELAY);
