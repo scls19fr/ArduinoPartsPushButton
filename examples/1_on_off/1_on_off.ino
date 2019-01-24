@@ -7,9 +7,9 @@ const byte PIN_BUTTON_0 = 7;
 // connect a led from this pin (13) to ground (GND) using a 220 ohm resistor
 const byte PIN_LED_0 = 13;
 
-// instantiate a push button object with pin number PIN_BUTTON
+// instantiate a push button object with pin number PIN_BUTTON_0
 PushButton butToggle(PIN_BUTTON_0);
-// instantiate a led object with pin number PIN_LED
+// instantiate a led object with pin number PIN_LED_0
 Led led(PIN_LED_0);
 
 uint32_t ms = 0;
