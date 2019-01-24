@@ -79,7 +79,7 @@ void BlinkTask::start(uint8_t times, uint32_t on_delay, uint32_t off_delay) {
   if (!m_active) {
     m_on_delay = on_delay;
     m_off_delay = off_delay;
-    m_times = times;
+    m_times = times * 2;
     m_times_remaining = m_times;
     m_forever = times == 0;
     schedule(m_ms);
@@ -102,22 +102,27 @@ bool BlinkTask::isActive() {
 
 void BlinkTask::update(uint32_t ms) {
   m_ms = ms;
+  bool terminated = false;
   if (m_active && (m_forever || m_times_remaining > 0)) {
     if (m_stop_request) {
-      Serial.println("terminated");
-      m_led.lit(m_initial_lit_state);
-      m_stop_request = false;
-      m_active = false;
+      terminated = true;
     }
     if (m_ms >= m_next_ms) {
       m_led.toggle();
       if (!m_forever) {
         m_times_remaining -= 1;
-        if (m_times_remaining==0) {
-          m_active = false;
+        if (m_times_remaining == 0) {
+          terminated = true;
         }
       }
       schedule(ms);
     }
+  }
+
+  if (terminated) {
+    Serial.println("terminated");
+    m_led.lit(m_initial_lit_state);
+    m_stop_request = false;
+    m_active = false;
   }
 }

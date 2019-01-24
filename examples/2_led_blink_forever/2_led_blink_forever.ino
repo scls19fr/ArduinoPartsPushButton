@@ -21,6 +21,9 @@ BlinkTask blinkTask(led);
 uint32_t ms = 0;
 
 void setup() {
+  Serial.begin(9600);
+  Serial.println("setup");
+  
   ms = millis();
 
   // initialize the push button object
@@ -28,33 +31,30 @@ void setup() {
   
   // initialize the led object
   led.begin(ms);
+  //led.off();
   // blinkTask.start(ON_DELAY, OFF_DELAY);
   // led.blinkTask.start(ON_DELAY, OFF_DELAY);
 }
 
 void loop() {
   ms = millis();
-  blinkTask.update(ms);
-  // led.update(ms);
 
   // read the button
   but.read(ms);
 
-  // if the button was released, change the LED state
-  if (but.wasReleased()) {
+  if (but.wasPressedFor(4000)) {
     if (blinkTask.isActive()) {
       Serial.println("stop blinkTask");
       blinkTask.stop();
-    } else {
+    }
+  } else if (but.wasPressedFor(100)) {
+    if (!blinkTask.isActive()) {
       Serial.println("start blinkTask forever");
       blinkTask.start(ON_DELAY, OFF_DELAY);
     }
   }
 
-  if (but.wasReleasedFor(2000)) {
-    if (!blinkTask.isActive()) {
-      Serial.println("start blinkTask 3 times");
-      blinkTask.start(3, ON_DELAY, OFF_DELAY);
-    }
-  }
+  blinkTask.update(ms);
+  // led.update(ms);
+
 }
