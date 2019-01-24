@@ -77,6 +77,8 @@ void BlinkTask::schedule(uint32_t ms) {
 
 void BlinkTask::start(uint8_t times, uint32_t on_delay, uint32_t off_delay) {
   if (!m_active) {
+    m_on_delay = on_delay;
+    m_off_delay = off_delay;
     m_times = times;
     m_times_remaining = m_times;
     m_forever = times == 0;
