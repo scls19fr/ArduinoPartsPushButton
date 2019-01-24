@@ -206,7 +206,7 @@ class GhostPushButton: public AbstractPushButton {
   private:
     bool m_ghost_state;   //!<  current button state for ghost mode, true=pressed
 
-    bool readPinValue();
+    bool readPinValue();  //!<  read pin value
 
 };
 

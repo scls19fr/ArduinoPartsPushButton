@@ -95,6 +95,10 @@ class BlinkTask {
     **/
     void stop();
 
+    /*!	\return true if task is active
+    **/
+    bool isActive();
+
     /*!	\brief Update BlinkTask
     **/
     void update(uint32_t ms);

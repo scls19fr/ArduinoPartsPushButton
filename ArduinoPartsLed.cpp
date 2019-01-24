@@ -92,13 +92,19 @@ void BlinkTask::start(uint32_t on_delay, uint32_t off_delay) {
 }
 
 void BlinkTask::stop() {
-  m_stop_request = false;
+  Serial.println("stop");
+  m_stop_request = true;
+}
+
+bool BlinkTask::isActive() {
+  return m_active;
 }
 
 void BlinkTask::update(uint32_t ms) {
   m_ms = ms;
   if (m_active && (m_forever || m_times_remaining > 0)) {
     if (m_stop_request) {
+      Serial.println("terminated");
       m_led.lit(m_initial_lit_state);
       m_stop_request = false;
       m_active = false;
