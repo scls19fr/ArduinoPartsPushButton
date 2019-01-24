@@ -18,15 +18,19 @@ GhostPushButton for mocking purpose
 bool AbstractPushButton::read(uint32_t ms) {
   bool pinVal = readPinValue();  // call virtual pure function
   if (ms - m_lastChange < m_debounceTime) {
-    //std::cout << "*** " << "lower than m_debounceTime" << std::endl;
-
     m_changed = false;
   } else {
-    //std::cout << "*** " << "greater than m_debounceTime" << std::endl;
     m_lastState = m_state;
     m_state = pinVal;
     m_changed = (m_state != m_lastState);
-    if (m_changed) m_lastChange = ms;
+    if (m_changed) {
+      m_lastChange = ms;
+      if (m_state) { // after pressing
+        m_longReleasedDuration = 0;
+      } else { // after releasing
+        m_longPressedDuration = 0;
+      }
+    }
   }
   m_time = ms;
   return m_state;
@@ -56,6 +60,26 @@ bool AbstractPushButton::releasedFor(uint32_t ms) {
   return !m_state && m_time - m_lastChange >= ms;
 }
 
+bool AbstractPushButton::wasPressedFor(uint32_t ms) {
+  if (ms > m_longPressedDuration) {
+    if (pressedFor(ms)) {
+      m_longPressedDuration = ms;
+      return true;
+    }
+  }
+  return false;
+}
+
+bool AbstractPushButton::wasReleasedFor(uint32_t ms) {
+  if (ms > m_longReleasedDuration) {
+    if (releasedFor(ms)) {
+      m_longReleasedDuration = ms;
+      return true;
+    }
+  }
+  return false;
+}
+
 uint32_t AbstractPushButton::lastChange() {
   return m_lastChange;
 }
@@ -76,7 +100,6 @@ void PushButton::begin(uint32_t ms) {
 bool PushButton::readPinValue() {
   bool pinVal = digitalRead(m_pin);
   if (m_invert) pinVal = !pinVal;
-  //std::cout << "*** " << "PushButton::readPinValue() " << pinVal << std::endl;
   return pinVal;
 }
 
@@ -102,7 +125,6 @@ void GhostPushButton::begin(uint32_t ms) {
 }
 
 bool GhostPushButton::readPinValue() {
-  //std::cout << "*** " << "GhostPushButton::readPinValue()" << std::endl;
   bool pinVal = m_ghost_state;
   if (m_invert) pinVal = !pinVal;
   return pinVal;

@@ -41,7 +41,9 @@ class AbstractPushButton {
     **	\return nothing
     **/
     AbstractPushButton(uint8_t pin, uint32_t debounceTime=PB_DEBOUNCE_TIME_DEFAULT, uint8_t pullupEnabled=PB_PULLUP_ENABLED_DEFAULT, uint8_t invert=PB_INVERT_DEFAULT)
-        : m_pin(pin), m_debounceTime(debounceTime), m_pullupEnabled(pullupEnabled), m_invert(invert) {}
+        : m_pin(pin), m_debounceTime(debounceTime),
+        m_pullupEnabled(pullupEnabled), m_invert(invert),
+        m_longPressedDuration(0), m_longReleasedDuration(0) {}
 
     /*!	\brief Get the current debounced button state.
     **	\param [in] ms - millis()
@@ -83,7 +85,7 @@ class AbstractPushButton {
     bool wasReleased();
 
     /*! \brief Check to see if the button is pressed and has been in that state 
-    **         for a specified time
+    **         for a specified time (trigger several times)
     **	\param [in] ms - duration (milliseconds)
     **  \retval true if the button state at the last call to read() was pressed,
     **          and has been in that state for at least the given number of milliseconds.
@@ -92,13 +94,31 @@ class AbstractPushButton {
     bool pressedFor(uint32_t ms);
 
     /*! \brief Check to see if the button is released and has been in that state 
-    **         for a specified time
+    **         for a specified time (trigger several times)
     **	\param [in] ms - duration (milliseconds)
     **  \retval true if the button state at the last call to read() was released,
     **          and has been in that state for at least the given number of milliseconds.
     **  \retval false otherwise
     **/
     bool releasedFor(uint32_t ms);
+
+    /*! \brief Check to see if the button is pressed and has been in that state 
+    **         for a specified time (trigger once)
+    **	\param [in] ms - duration (milliseconds)
+    **  \retval true if the button state at the last call to read() was pressed,
+    **          and has been in that state for at least the given number of milliseconds.
+    **  \retval false otherwise
+    **/
+    bool wasPressedFor(uint32_t ms);
+
+    /*! \brief Check to see if the button is released and has been in that state 
+    **         for a specified time (trigger once)
+    **	\param [in] ms - duration (milliseconds)
+    **  \retval true if the button state at the last call to read() was released,
+    **          and has been in that state for at least the given number of milliseconds.
+    **  \retval false otherwise
+    **/
+    bool wasReleasedFor(uint32_t ms);
 
     /*! \brief get the time the button last changed state
     **  \return the time in milliseconds (from millis) that the button last
@@ -116,7 +136,10 @@ class AbstractPushButton {
     bool m_changed;          //!<  state changed since last read
     uint32_t m_time;         //!<  time of current state (ms from millis)
     uint32_t m_lastChange;   //!<  time of last state change (ms)
-  
+
+    uint32_t m_longPressedDuration;   //!<  last duration of a long press event (ms)
+    uint32_t m_longReleasedDuration;  //!<  last duration of a long release event (ms)
+
   private:
     /*! \brief get the value of pin on which button is connected
     **  \return the boolean value.
